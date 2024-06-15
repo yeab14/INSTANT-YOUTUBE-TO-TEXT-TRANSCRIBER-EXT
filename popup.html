@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>YouTube to Text</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5; /* Light gray background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Elegant font */
+        }
+
+        .popups {
+            width: 400px;
+            height: 500px;
+            padding: 20px;
+            background-color: #fff; /* White background */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow */
+            text-align: center;
+            border-radius: 10px;
+            border: 4px solid #dc3545; /* Red border */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 28px; /* Larger font size */
+            color: #333; /* Dark gray color */
+            margin-bottom: 10px; /* Reduced margin */
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-weight: bold; /* Bold text */
+            text-transform: uppercase; /* Uppercase text */
+            letter-spacing: 1px; /* Increased letter spacing */
+        }
+
+        p {
+            font-size: 18px; /* Larger font size */
+            color: #555; /* Medium gray color */
+            margin-bottom: 20px; /* Reduced margin */
+            line-height: 1.6; /* Increased line height */
+        }
+
+        #transcription-button {
+            background-color: #dc3545; /* Red button */
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 50%; /* Circular button */
+            font-size: 24px; /* Larger font size */
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #transcription-button:hover {
+            background-color: #c82333; /* Darker red on hover */
+            transform: scale(1.1); /* Slightly larger on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+        }
+
+        #transcription-button:active {
+            transform: scale(0.95); /* Slightly smaller on click */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reduced shadow on click */
+        }
+    </style>
+</head>
+<body>
+<div class="popups" id="popup-content">
+    <h1>Instant YouTube to Text Transcriber <br> Chrome Extension</h1>
+    <p>Effortlessly transcribe YouTube videos into text with our powerful tool. Enhance your learning and accessibility by clicking the button below to convert any video into readable text.</p>
+    <button id="transcription-button" title="Transcribe Video">
+        &#128393; <!-- Unicode pencil icon -->
+    </button>
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
+
+

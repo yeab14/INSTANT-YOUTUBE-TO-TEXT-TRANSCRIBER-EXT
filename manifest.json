@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Instant YouTube to Text Transcriber Ext",
+  "version": "1.0",
+  "description": "Automatically transcribe YouTube videos into text. Enhance your learning and accessibility with this powerful tool!",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/loading.gif"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
+
+
+
+
+
+
+
