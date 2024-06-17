@@ -264,6 +264,25 @@ if (!userHasRated) {
     }
 }
 
+
+// Function to handle full-screen changes
+function handleFullscreenChange() {
+    const button = document.getElementById('transcription-button');
+    if (button) {
+        if (document.fullscreenElement) {
+            button.style.display = 'none';  // Hide button in full-screen mode
+        } else {
+            button.style.display = 'flex';  // Show button when exiting full-screen
+        }
+    }
+}
+
+// Add event listeners for full-screen changes
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
 // Function to transcribe the video
 function transcribeVideo(videoUrl) {
     console.log('Transcribing video:', videoUrl); // Log the video URL
@@ -297,7 +316,6 @@ function transcribeVideo(videoUrl) {
 
     sendMessageWithRetry();
 }
-
 
 // Function to add the transcription button
 function addTranscriptionButton() {
@@ -342,14 +360,13 @@ function addTranscriptionButton() {
     button.addEventListener('click', () => {
         // Change button to loading state with a GIF
         button.innerHTML = '<img src="' + chrome.runtime.getURL('icons/loading.gif') + '" alt="Loading..." style="width: 20px; height: 20px;">';
-    
+
         const videoUrl = window.location.href;
         transcribeVideo(videoUrl);
     });
-    
-    
 }
 
+// Function to initialize the content script
 function initializeContentScript() {
     console.log('Content script loaded'); // Log script load
     addTranscriptionButton();
