@@ -1,4 +1,4 @@
-// Function to create the transcription popup
+// Funpopupction to create the transcription popup
 function createTranscriptionPopup(transcript) {
     let popup = document.getElementById('transcription-popup');
     if (!popup) {
@@ -11,8 +11,8 @@ function createTranscriptionPopup(transcript) {
         popup.style.zIndex = '9999';
         popup.style.padding = '10px';  // Added padding for the whole popup
         popup.style.backgroundColor = '#fff';  // Light gray background
-        popup.style.border = '2px solid #dc3545';  // Red border
-        popup.style.borderRadius = '5px';
+        popup.style.border = 'solid #dc3545';  // Red border
+        // popup.style.borderRadius = '5px';
         popup.style.overflowX = 'hidden'; 
         popup.style.width = '400px';  // Increased width for better readability
         popup.style.maxHeight = '75vh';  // Limited maximum height for better scrolling
@@ -27,8 +27,8 @@ titleBar.style.background = 'linear-gradient(to right, #dc3545, #ffffff)';  // G
 titleBar.style.color = '#fff';  // Black text color
 titleBar.style.width = '370px';  // Increased width for better readability
 titleBar.style.maxHeight = '40px';  // Limit height for a compact title bar
-titleBar.style.borderTopLeftRadius = '10px';  // Rounded corners
-titleBar.style.borderTopRightRadius = '10px';
+// titleBar.style.borderTopLeftRadius = '10px';  // Rounded corners
+// titleBar.style.borderTopRightRadius = '10px';
 titleBar.style.padding = '10px';  // Padding inside title bar
 titleBar.style.fontFamily = 'Arial, sans-serif';  // Set font family
 titleBar.style.fontSize = '20px';  // Larger font size for title
@@ -299,7 +299,6 @@ function transcribeVideo(videoUrl) {
 
 // Function to add the transcription button
 function addTranscriptionButton() {
-    console.log('Attempting to add transcription button'); // Log button addition attempt
     if (document.getElementById('transcription-button')) return;
 
     const button = document.createElement('button');
