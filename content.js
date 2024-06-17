@@ -267,8 +267,8 @@ if (!userHasRated) {
 // Function to transcribe the video
 function transcribeVideo(videoUrl) {
     console.log('Transcribing video:', videoUrl); // Log the video URL
-    let retries = 3; // Number of retries
-    let retryDelay = 1000; // Delay between retries in milliseconds
+    let retries = 2; // Number of retries
+    let retryDelay = 500; // Delay between retries in milliseconds
 
     function sendMessageWithRetry() {
         chrome.runtime.sendMessage({ action: 'transcribe', videoUrl }, (response) => {
@@ -286,9 +286,10 @@ function transcribeVideo(videoUrl) {
                 }
             } else {
                 console.error('Error fetching transcript. Please try again.');
-                if (retries > 0) {
-                    setTimeout(sendMessageWithRetry, retryDelay);
-                    retries--;
+                // Hide the button immediately upon encountering an error
+                const button = document.getElementById('transcription-button');
+                if (button) {
+                    button.style.display = 'none';
                 }
             }
         });
@@ -296,6 +297,7 @@ function transcribeVideo(videoUrl) {
 
     sendMessageWithRetry();
 }
+
 
 // Function to add the transcription button
 function addTranscriptionButton() {
