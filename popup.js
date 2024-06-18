@@ -288,38 +288,34 @@ if (!userHasRated) {
 }
 
 
-    // Function to transcribe the video
+// Function to transcribe the video
 function transcribeVideo(videoUrl) {
     console.log('Transcribing video:', videoUrl); // Log the video URL
-    let retries = 2; // Number of retries
-    let retryDelay = 500; // Delay between retries in milliseconds
 
-    function sendMessageWithRetry() {
-        chrome.runtime.sendMessage({ action: 'transcribe', videoUrl }, (response) => {
-            if (response && response.transcript) {
-                createTranscriptionPopup(response.transcript);
+    // Send message to transcribe the video
+    chrome.runtime.sendMessage({ action: 'transcribe', videoUrl }, (response) => {
+        if (response && response.transcript) {
+            createTranscriptionPopup(response.transcript);
 
-                // Revert button to original icon after response
-                const button = document.getElementById('transcription-button');
-                if (button) {
-                    const icon = document.createElement('span');
-                    icon.innerHTML = '&#128393;';  // Unicode pencil icon
-                    icon.style.fontSize = '20px';  // Font size for the icon
-                    button.innerHTML = '';  // Clear current content
-                    button.appendChild(icon);
-                }
-            } else {
-                console.error('Error fetching transcript. Please try again.');
-                // Hide the button immediately upon encountering an error
-                const button = document.getElementById('transcription-button');
-                if (button) {
-                    button.style.display = 'none';
-                }
+            // Revert button to original icon after response
+            const button = document.getElementById('transcription-button');
+            if (button) {
+                const icon = document.createElement('span');
+                icon.innerHTML = '&#128393;';  // Unicode pencil icon
+                icon.style.fontSize = '20px';  // Font size for the icon
+                button.innerHTML = '';  // Clear current content
+                button.appendChild(icon);
             }
-        });
-    }
-
-    sendMessageWithRetry();
+        } else {
+            console.error('Error fetching transcript. Please try again.');
+            // Hide the button immediately upon encountering an error
+            const button = document.getElementById('transcription-button');
+            if (button) {
+                button.style.display = 'none';
+            }
+        }
+    });
 }
+
 
 });
