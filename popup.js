@@ -20,353 +20,273 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('mouseleave', () => {
         button.style.backgroundColor = '#dc3545';  // Restore original red after hover
     });
-    button.innerHTML = '&#128393;';
+    button.innerHTML = '&#128393;';  // Unicode for a watch icon
 
     // Function to create the transcription popup
-function createTranscriptionPopup(transcript) {
-    button.innerHTML = '&#128393;';
-    let popup = document.getElementById('transcription-popup');
-    if (!popup) {
-        popup = document.createElement('div');
-        popup.id = 'transcription-popup';
-        popup.classList.add('transcription-popup');
-        popup.style.position = 'fixed';
-        popup.style.top = '1px';  // Adjusted top position for better visibility
-        popup.style.right = '3px';  // Adjusted right position for better alignment
-        popup.style.zIndex = '9999';
-        popup.style.padding = '10px';  // Added padding for the whole popup
-        popup.style.backgroundColor = '#fff';  // Light gray background
-        popup.style.border = '2px solid #dc3545';  // Red border
-        popup.style.borderRadius = '5px';
-        popup.style.width = '418px';  // Increased width for better readability
-        popup.style.height= '519px'; 
-        popup.style.overflowY = 'auto'; 
-        popup.style.overflowX = 'hidden'; 
-        popup.style.boxShadow = '0px 4px 10px rgba(0, 0, 0, 0.3)';  // Shadow effect
-        popup.style.fontFamily = 'Georgia, Times, serif'; // Set font family
-        popup.style.color = '#333';  // Text color
+    function createTranscriptionPopup(transcript) {
+        button.innerHTML = '&#128393;';  // Reset button text/icon
+        
+        let popup = document.getElementById('transcription-popup');
+        if (!popup) {
+            popup = document.createElement('div');
+            popup.id = 'transcription-popup';
+            popup.classList.add('transcription-popup');
+            popup.style.position = 'fixed';
+            popup.style.top = '1px';  // Adjusted top position for better visibility
+            popup.style.right = '3px';  // Adjusted right position for better alignment
+            popup.style.zIndex = '9999';
+            popup.style.padding = '10px';  // Added padding for the whole popup
+            popup.style.backgroundColor = '#fff';  // Light gray background
+            popup.style.border = '2px solid #dc3545';  // Red border
+            popup.style.borderRadius = '5px';
+            popup.style.width = '418px';  // Increased width for better readability
+            popup.style.height = '519px';  // Increased height
+            popup.style.overflowY = 'auto';  // Allow vertical scrolling
+            popup.style.overflowX = 'hidden';  // Hide horizontal scrollbar
+            popup.style.boxShadow = '0px 4px 10px rgba(0, 0, 0, 0.3)';  // Shadow effect
+            popup.style.fontFamily = 'Georgia, Times, serif'; // Set font family
+            popup.style.color = '#333';  // Text color
 
-        document.body.appendChild(popup);
+            document.body.appendChild(popup);
 
-// Title bar for the popup
-const titleBar = document.createElement('div');
-titleBar.style.background = 'linear-gradient(to right, #dc3545, #ffffff)';  // Gradient background
-titleBar.style.color = '#fff';  // Black text color
-titleBar.style.width = '370px';  // Increased width for better readability
-titleBar.style.maxHeight = '40px';  // Limit height for a compact title bar
-// titleBar.style.borderTopLeftRadius = '10px';  // Rounded corners
-// titleBar.style.borderTopRightRadius = '10px';
-titleBar.style.padding = '10px';  // Padding inside title bar
-titleBar.style.fontFamily = 'Arial, sans-serif';  // Set font family
-titleBar.style.fontSize = '20px';  // Larger font size for title
-titleBar.style.fontWeight = 'bold';  // Bold text
-titleBar.style.textTransform = 'uppercase';  // Uppercase text
-titleBar.style.right = '30px';
-titleBar.style.justifyContent = 'center';  // Center align horizontally
-titleBar.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.2)';  // Shadow effect
-titleBar.textContent = 'Transcribed Text';  // Title text
+            // Title bar for the popup
+            const titleBar = document.createElement('div');
+            titleBar.style.background = 'linear-gradient(to right, #dc3545, #ffffff)';  // Gradient background
+            titleBar.style.color = '#fff';  // Black text color
+            titleBar.style.width = '370px';  // Increased width for better readability
+            titleBar.style.maxHeight = '40px';  // Limit height for a compact title bar
+            titleBar.style.padding = '10px';  // Padding inside title bar
+            titleBar.style.fontFamily = 'Arial, sans-serif';  // Set font family
+            titleBar.style.fontSize = '20px';  // Larger font size for title
+            titleBar.style.fontWeight = 'bold';  // Bold text
+            titleBar.style.textTransform = 'uppercase';  // Uppercase text
+            titleBar.style.right = '30px';
+            titleBar.style.justifyContent = 'center';  // Center align horizontally
+            titleBar.style.boxShadow = '0px 2px 5px rgba(0, 0, 0, 0.2)';  // Shadow effect
+            titleBar.textContent = 'Transcribed Text';  // Title text
 
-popup.appendChild(titleBar);
+            popup.appendChild(titleBar);
 
+            // Container for the buttons inside the title bar
+            const buttonContainer = document.createElement('div');
+            buttonContainer.style.position = 'absolute';
+            buttonContainer.style.top = '15px';
+            buttonContainer.style.right = '35px';
+            buttonContainer.style.display = 'flex';
+            buttonContainer.style.gap = '15px';  // Adjusted gap between buttons
+            buttonContainer.style.alignItems = 'center';  // Center align items
+            titleBar.appendChild(buttonContainer);
 
+            // Stylish copy button (icon)
+            const copyButton = document.createElement('button');
+            copyButton.innerHTML = '&#128203;';  // Clipboard icon
+            copyButton.style.width = '30px';  // Increased width
+            copyButton.style.height = '30px';  // Set height for equal size
+            copyButton.style.padding = '8px';  // Increased padding for better click area
+            copyButton.style.backgroundColor = '#007bff';  // Blue color for copy button
+            copyButton.style.color = '#ffffff';  // White text
+            copyButton.style.border = 'none';
+            copyButton.style.borderRadius = '50%';
+            copyButton.style.cursor = 'pointer';
+            copyButton.style.fontSize = '14px';  // Font size for the icon
+            copyButton.style.display = 'flex';
+            copyButton.style.alignItems = 'center';
+            copyButton.style.justifyContent = 'center';
+            copyButton.addEventListener('mouseenter', () => {
+                copyButton.style.backgroundColor = '#0056b3';  // Darker blue on hover
+            });
+            copyButton.addEventListener('mouseleave', () => {
+                copyButton.style.backgroundColor = '#007bff';  // Restore original blue after hover
+            });
+            copyButton.addEventListener('click', () => {
+                navigator.clipboard.writeText(transcript)
+                    .then(() => {
+                        console.log('Text copied to clipboard');
+                        showToastMessage('Text copied successfully', true); // Success message
+                    })
+                    .catch(err => {
+                        console.error('Unable to copy text: ', err);
+                        showToastMessage('Failed to copy text', false); // Error message
+                    });
+            });
 
+            buttonContainer.appendChild(copyButton);
 
-// Container for the buttons inside the title bar
-const buttonContainer = document.createElement('div');
-buttonContainer.style.position = 'absolute';
-buttonContainer.style.top = '15px';
-buttonContainer.style.right = '35px';
-buttonContainer.style.display = 'flex';
-buttonContainer.style.gap = '15px';  // Adjusted gap between buttons
-buttonContainer.style.alignItems = 'center';  // Center align items
-titleBar.appendChild(buttonContainer);
+            // Stylish hide button (icon)
+            const hideButton = document.createElement('button');
+            hideButton.innerHTML = '&#10006;';  // Close icon
+            hideButton.style.width = '30px';  // Increased width
+            hideButton.style.height = '30px';  // Set height for equal size
+            hideButton.style.padding = '8px';  // Increased padding for better click area
+            hideButton.style.backgroundColor = '#dc3545';  // Red color for hide button
+            hideButton.style.color = '#ffffff';  // White text
+            hideButton.style.border = 'none';
+            hideButton.style.borderRadius = '50%';
+            hideButton.style.cursor = 'pointer';
+            hideButton.style.fontSize = '14px';  // Font size for the icon
+            hideButton.style.display = 'flex';
+            hideButton.style.alignItems = 'center';
+            hideButton.style.justifyContent = 'center';
+            hideButton.addEventListener('mouseenter', () => {
+                hideButton.style.backgroundColor = '#c82333';  // Darker red on hover
+            });
+            hideButton.addEventListener('mouseleave', () => {
+                hideButton.style.backgroundColor = '#dc3545';  // Restore original red after hover
+            });
+            hideButton.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
 
-// Function to show a toast message
-function showToastMessage(message, isSuccess) {
-    const toast = document.createElement('div');
-    toast.textContent = message;
-    toast.style.background = 'linear-gradient(45deg, #dc3545, #ffffff)';  // Gradient background at 45 degrees
-    toast.style.color = '#fff';  // Text color
-    toast.style.fontFamily = 'Arial, sans-serif';  // Font family
-    toast.style.fontSize = '16px';  // Font size
-    toast.style.fontWeight = 'bold';  // Font weight
-    toast.style.position = 'fixed';
-    toast.style.top = '12px';
-    toast.style.right = '20px';
-    toast.style.padding = '15px 20px';
-    toast.style.borderRadius = '5px';
-    toast.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';  // Shadow for depth
-    toast.style.opacity = '0';
-    toast.style.transition = 'opacity 0.4s ease-in-out';
-    toast.style.zIndex = '9999';
+            buttonContainer.appendChild(hideButton);
 
-    document.body.appendChild(toast);
-
-    // Fade in toast
-    setTimeout(() => {
-        toast.style.opacity = '1';
-    }, 100);
-
-    // Fade out toast after 3 seconds
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        setTimeout(() => {
-            document.body.removeChild(toast);
-        }, 400);
-    }, 3000);
-}
-
-
-// Stylish copy button (icon)
-const copyButton = document.createElement('button');
-copyButton.innerHTML = '&#128203;';  // Clipboard icon
-copyButton.style.width = '30px';  // Increased width
-copyButton.style.height = '30px';  // Set height for equal size
-copyButton.style.padding = '8px';  // Increased padding for better click area
-copyButton.style.backgroundColor = '#007bff';  // Blue color for copy button
-copyButton.style.color = '#ffffff';  // White text
-copyButton.style.border = 'none';
-copyButton.style.borderRadius = '50%';
-copyButton.style.cursor = 'pointer';
-copyButton.style.fontSize = '14px';  // Font size for the icon
-copyButton.style.display = 'flex';
-copyButton.style.alignItems = 'center';
-copyButton.style.justifyContent = 'center';
-copyButton.addEventListener('mouseenter', () => {
-    copyButton.style.backgroundColor = '#0056b3';  // Darker blue on hover
-});
-copyButton.addEventListener('mouseleave', () => {
-    copyButton.style.backgroundColor = '#007bff';  // Restore original blue after hover
-});
-copyButton.addEventListener('click', () => {
-    navigator.clipboard.writeText(transcript)
-        .then(() => {
-            console.log('Text copied to clipboard');
-            // Show a toast or message indicating success
-            showToastMessage('Text copied successfully', true); // Success message
-        })
-        .catch(err => {
-            console.error('Unable to copy text: ', err);
-            // Handle error
-            showToastMessage('Failed to copy text', false); // Error message
-        });
-});
-
-document.body.appendChild(copyButton);
-
-
-// Stylish hide button (icon)
-const hideButton = document.createElement('button');
-hideButton.innerHTML = '&#10006;';  // Close icon
-hideButton.style.width = '30px';  // Increased width
-hideButton.style.height = '30px';  // Set height for equal size
-hideButton.style.padding = '8px';  // Increased padding for better click area
-hideButton.style.backgroundColor = '#dc3545';  // Red color for hide button
-hideButton.style.color = '#ffffff';  // White text
-hideButton.style.border = 'none';
-hideButton.style.borderRadius = '50%';
-hideButton.style.cursor = 'pointer';
-hideButton.style.fontSize = '14px';  // Font size for the icon
-hideButton.style.display = 'flex';
-hideButton.style.alignItems = 'center';
-hideButton.style.justifyContent = 'center';
-hideButton.addEventListener('mouseenter', () => {
-    hideButton.style.backgroundColor = '#c82333';  // Darker red on hover
-});
-hideButton.addEventListener('mouseleave', () => {
-    hideButton.style.backgroundColor = '#dc3545';  // Restore original red after hover
-});
-hideButton.addEventListener('click', () => {
-    popup.style.display = 'none';
-});
-
-// Add the updated buttons to the button container
-buttonContainer.appendChild(copyButton);
-buttonContainer.appendChild(hideButton);
-
-
-// Styling for the transcript text
-const transcriptText = document.createElement('div');
-transcriptText.innerText = transcript;
-transcriptText.style.fontSize = '14px';  // Increased font size
-transcriptText.style.lineHeight = '1.5';  // Improved line height
-transcriptText.style.marginTop = '20px';  // Added space above text
-transcriptText.style.marginBottom = '20px';  // Added space below text
-transcriptText.classList.add('transcript-text');
-popup.appendChild(transcriptText);
-
-
-// Rate Us - 5 stars widget
-const rateUsContainer = document.createElement('div');
-rateUsContainer.style.marginTop = '20px';  // Added space above the widget
-
-// Check if user has already rated
-const userHasRated = localStorage.getItem('userHasRated');
-
-if (!userHasRated) {
-    const rateUsHeader = document.createElement('div');
-    rateUsHeader.style.display = 'flex';
-    rateUsHeader.style.alignItems = 'center';
-    rateUsHeader.style.marginBottom = '10px';
-
-    const rateUsText = document.createElement('span');
-    rateUsText.innerText = 'Enjoyed our transcription service? ';
-    rateUsText.style.fontSize = '16px';  // Font size
-    rateUsText.style.fontWeight = 'bold';  // Bold font weight
-    rateUsText.style.color = '#dc3545';  // Dark text color
-
-    const emoji = document.createElement('span');
-    emoji.innerHTML = '&#x1F60A;';  // Smiling face emoji
-    emoji.style.fontSize = '26px';  // Emoji size
-    emoji.style.marginRight = '10px';  // Space between text and emoji
-
-    rateUsHeader.appendChild(rateUsText);
-    rateUsHeader.appendChild(emoji);
-
-    const starIconsContainer = document.createElement('div');
-    starIconsContainer.style.display = 'flex';
-    starIconsContainer.style.alignItems = 'center';
-
-    const starIcons = [];
-    let currentRating = 0;
-
-    const updateStars = (rating) => {
-        starIcons.forEach((star, index) => {
-            star.style.color = index < rating ? '#dc3545' : '#c0c0c0';
-        });
-    };
-
-    for (let i = 1; i <= 5; i++) {
-        const starIcon = document.createElement('span');
-        starIcon.innerHTML = '&#9733;';  // Unicode star character
-        starIcon.style.fontSize = '26px';  // Star icon size
-        starIcon.style.color = '#c0c0c0';  // Gray color for unselected stars
-        starIcon.style.cursor = 'pointer';
-        starIcon.addEventListener('mouseenter', () => {
-            updateStars(i);
-        });
-        starIcon.addEventListener('mouseleave', () => {
-            updateStars(currentRating);
-        });
-        starIcon.addEventListener('click', () => {
-            currentRating = i;
-            updateStars(currentRating);
-            localStorage.setItem('userHasRated', 'true');  // Save rating state
-
-            // Hide the rate us widget
-            rateUsContainer.style.display = 'none';
-
-            // Redirect based on rating
-            if (currentRating >= 4) {
-                window.open('https://www.google.com', '_blank');
-            } else {
-                window.open('https://www.youtube.com/hashtag/funnyvideo', '_blank');
-            }
-        });
-        starIcons.push(starIcon);
-        starIconsContainer.appendChild(starIcon);
-    }
-
-    rateUsHeader.appendChild(starIconsContainer);
-    rateUsContainer.appendChild(rateUsHeader);
-    popup.appendChild(rateUsContainer);
-} else {
-    // User has already rated, hide the rate us widget
-    rateUsContainer.style.display = 'none';
-}
-
-
-
-    } else {
-        // Update existing popup with new transcript
-        const transcriptText = popup.querySelector('.transcript-text');
-        if (transcriptText) {
+            // Styling for the transcript text
+            const transcriptText = document.createElement('div');
             transcriptText.innerText = transcript;
+            transcriptText.style.fontSize = '14px';  // Increased font size
+            transcriptText.style.lineHeight = '1.5';  // Improved line height
+            transcriptText.style.marginTop = '20px';  // Added space above text
+            transcriptText.style.marginBottom = '20px';  // Added space below text
+            transcriptText.classList.add('transcript-text');
+            popup.appendChild(transcriptText);
+
+            // Rate Us - 5 stars widget
+            const rateUsContainer = document.createElement('div');
+            rateUsContainer.style.marginTop = '20px';  // Added space above the widget
+
+            // Check if user has already rated
+            const userHasRated = localStorage.getItem('userHasRated');
+
+            if (!userHasRated) {
+                const rateUsHeader = document.createElement('div');
+                rateUsHeader.style.display = 'flex';
+                rateUsHeader.style.alignItems = 'center';
+                rateUsHeader.style.marginBottom = '10px';
+
+                const rateUsText = document.createElement('span');
+                rateUsText.innerText = 'Enjoyed our transcription service? ';
+                rateUsText.style.fontSize = '16px';  // Font size
+                rateUsText.style.fontWeight = 'bold';  // Bold font weight
+                rateUsText.style.color = '#dc3545';  // Dark text color
+
+                const emoji = document.createElement('span');
+                emoji.innerHTML = '&#x1F60A;';  // Smiling face emoji
+                emoji.style.fontSize = '26px';  // Emoji size
+                emoji.style.marginRight = '10px';  // Space between text and emoji
+
+                rateUsHeader.appendChild(rateUsText);
+                rateUsHeader.appendChild(emoji);
+
+                const starIconsContainer = document.createElement('div');
+                starIconsContainer.style.display = 'flex';
+                starIconsContainer.style.alignItems = 'center';
+
+                const starIcons = [];
+                let currentRating = 0;
+
+                const updateStars = (rating) => {
+                    starIcons.forEach((star, index) => {
+                        star.style.color = index < rating ? '#dc3545' : '#c0c0c0';
+                    });
+                };
+
+                for (let i = 1; i <= 5; i++) {
+                    const starIcon = document.createElement('span');
+                    starIcon.innerHTML = '&#9733;';  // Unicode star character
+                    starIcon.style.fontSize = '26px';  // Star icon size
+                    starIcon.style.color = '#c0c0c0';  // Gray color for unselected stars
+                    starIcon.style.cursor = 'pointer';
+                    starIcon.addEventListener('mouseenter', () => {
+                        updateStars(i);
+                    });
+                    starIcon.addEventListener('mouseleave', () => {
+                        updateStars(currentRating);
+                    });
+                    starIcon.addEventListener('click', () => {
+                        currentRating = i;
+                        updateStars(currentRating);
+                        localStorage.setItem('userHasRated', 'true');  // Save rating state
+
+                        // Hide the rate us widget
+                        rateUsContainer.style.display = 'none';
+
+                        // Redirect based on rating
+                        if (currentRating >= 4) {
+                            window.open('https://www.google.com', '_blank');
+                        } else {
+                            window.open('https://www.youtube.com/hashtag/funnyvideo', '_blank');
+                        }
+                    });
+                    starIcons.push(starIcon);
+                    starIconsContainer.appendChild(starIcon);
+                }
+
+                rateUsHeader.appendChild(starIconsContainer);
+                rateUsContainer.appendChild(rateUsHeader);
+                popup.appendChild(rateUsContainer);
+            } else {
+                // User has already rated, hide the rate us widget
+                rateUsContainer.style.display = 'none';
+            }
+        } else {
+            // Update existing popup with new transcript
+            const transcriptText = popup.querySelector('.transcript-text');
+            if (transcriptText) {
+                transcriptText.innerText = transcript;
+            }
+            popup.style.display = 'block';
         }
-        popup.style.display = 'block';
     }
-}
 
-
-function showErrorMessage(message) {
-    const errorToast = document.createElement('div');
-    errorToast.style.position = 'fixed';
-    errorToast.style.top = '50%';
-    errorToast.style.left = '50%';
-    errorToast.style.transform = 'translate(-50%, -50%)';
-    errorToast.style.width = '440px'; // Same width as transcription popup
-    errorToast.style.height = '540px'; // Same height as transcription popup
-    errorToast.style.backgroundColor = '#fff';
-    errorToast.style.border = ' #dc3545'; // Red border with increased thickness
-    errorToast.style.borderRadius = '10px';
-    errorToast.style.boxShadow = '0px 8px 20px rgba(0, 0, 0, 0.4)'; // Increased shadow effect
-    errorToast.style.fontFamily = 'Arial, sans-serif'; // Stylish font
-    errorToast.style.zIndex = '9999';
-    errorToast.style.opacity = '0';
-    errorToast.style.transition = 'opacity 0.4s ease-in-out';
-    errorToast.style.overflow = 'hidden'; // Hide overflow if needed
-
-    const errorMessage = document.createElement('div');
-    errorMessage.style.display = 'flex';
-    errorMessage.style.flexDirection = 'column';
-    errorMessage.style.alignItems = 'center';
-    errorMessage.style.justifyContent = 'center';
-    errorMessage.style.height = '100%';
-    errorMessage.style.padding = '40px'; // Increased padding inside the error message
-    errorMessage.style.textAlign = 'center';
-
-    errorMessage.innerHTML = `
-        <p style="margin: 0; font-size: 24px; line-height: 1.5; font-family: 'Georgia', serif; color: #333;">${message}</p>
-        <button id="error-toast-ok" style="
-            background: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 15px 30px;
-            cursor: pointer;
-            margin-top: 30px;
-            font-size: 18px;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            font-family: 'Arial', sans-serif;
-        ">OK</button>
-    `;
-
-    errorToast.appendChild(errorMessage);
-    document.body.appendChild(errorToast);
-
-    // Fade in toast
-    setTimeout(() => {
-        errorToast.style.opacity = '1';
-    }, 100);
-
-    // Event listener for OK button hover effect
-    const okButton = document.getElementById('error-toast-ok');
-    okButton.addEventListener('mouseenter', () => {
-        okButton.style.backgroundColor = '#b80000';
-        okButton.style.transform = 'scale(1.1)';
-    });
-
-    okButton.addEventListener('mouseleave', () => {
-        okButton.style.backgroundColor = '#dc3545';
-        okButton.style.transform = 'scale(1)';
-    });
-
-    // Event listener for OK button click
-    okButton.addEventListener('click', () => {
+    function showErrorMessage(message) {
+        const errorToast = document.createElement('div');
+        errorToast.style.position = 'fixed';
+        errorToast.style.top = '50%';
+        errorToast.style.left = '50%';
+        errorToast.style.transform = 'translate(-50%, -50%)';
+        errorToast.style.width = '440px'; // Same width as transcription popup
+        errorToast.style.height = '540px'; // Same height as transcription popup
+        errorToast.style.backgroundColor = '#fff';
+        errorToast.style.border = '#dc3545'; // Red border with increased thickness
+        errorToast.style.borderRadius = '10px';
+        errorToast.style.boxShadow = '0px 8px 20px rgba(0, 0, 0, 0.4)'; // Increased shadow effect
+        errorToast.style.fontFamily = 'Arial, sans-serif'; // Stylish font
+        errorToast.style.zIndex = '9999';
         errorToast.style.opacity = '0';
+        errorToast.style.transition = 'opacity 0.4s ease-in-out';
+        errorToast.style.overflow = 'hidden'; // Hide overflow if needed
+    
+        // Center content vertically and horizontally
+        errorToast.style.display = 'flex';
+        errorToast.style.alignItems = 'center';
+        errorToast.style.justifyContent = 'center';
+    
+        const errorMessage = document.createElement('div');
+        errorMessage.style.textAlign = 'center';
+        errorMessage.style.padding = '20px'; // Adjust padding as needed
+    
+        errorMessage.innerHTML = `
+            <p style="margin: 0; font-size: 24px; line-height: 1.5; font-family: 'Georgia', serif; color: #333;">${message}</p>
+        `;
+    
+        errorToast.appendChild(errorMessage);
+        document.body.appendChild(errorToast);
+    
+        // Fade in toast
         setTimeout(() => {
-            document.body.removeChild(errorToast);
-        }, 400);
-    });
-}
+            errorToast.style.opacity = '1';
+        }, 100);
+    
+        // Automatically fade out toast after 3 seconds
+        setTimeout(() => {
+            errorToast.style.opacity = '0';
+            setTimeout(() => {
+                document.body.removeChild(errorToast);
+            }, 400);
+        }, 3000);
+    }
+    
 
-
-
-
-
-// Function to transcribe the video
+    // Function to transcribe the video
 function transcribeVideo(videoUrl) {
     console.log('Transcribing video:', videoUrl); // Log the video URL
 
@@ -390,7 +310,6 @@ function transcribeVideo(videoUrl) {
             button.appendChild(icon);
         }
     });
-}    
-
+}
 
 });
