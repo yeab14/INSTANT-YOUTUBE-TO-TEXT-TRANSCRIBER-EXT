@@ -283,6 +283,74 @@ document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 document.addEventListener('mozfullscreenchange', handleFullscreenChange);
 document.addEventListener('MSFullscreenChange', handleFullscreenChange);
 
+
+// Function to show a stylish error message with a description and an OK button
+function showErrorMessage(message) {
+    const errorToast = document.createElement('div');
+    errorToast.style.position = 'fixed';
+    errorToast.style.top = '30%';
+    errorToast.style.left = '78%';
+    errorToast.style.transform = 'translate(-50%, -50%)';
+    errorToast.style.padding = '40px 5px';
+    errorToast.style.backgroundColor = '#fff';
+    errorToast.style.border = 'solid 2px #dc3545';  // Red border
+    errorToast.style.borderRadius = '8px';
+    errorToast.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2)';  // Shadow for depth
+    errorToast.style.width = '200px';  // Limit width for better readability
+    errorToast.style.zIndex = '9999';
+    errorToast.style.opacity = '0';
+    errorToast.style.transition = 'opacity 0.4s ease-in-out';
+    errorToast.style.textAlign = 'center';  // Center text
+
+    const errorMessage = document.createElement('div');
+    errorMessage.innerHTML = `
+        <p style="margin: 0; font-size: 18px;">${message}</p>
+        <button id="error-toast-ok" style="
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-family: 'Arial', sans-serif;
+        ">OK</button>
+    `;
+
+    errorToast.appendChild(errorMessage);
+    document.body.appendChild(errorToast);
+
+    // Fade in toast
+    setTimeout(() => {
+        errorToast.style.opacity = '1';
+    }, 100);
+
+     // Event listener for OK button hover effect
+     const okButton = document.getElementById('error-toast-ok');
+     okButton.addEventListener('mouseenter', () => {
+         okButton.style.backgroundColor = '#b80000';
+         okButton.style.transform = 'scale(1)';
+     });
+ 
+     okButton.addEventListener('mouseleave', () => {
+         okButton.style.backgroundColor = '#dc3545';
+         okButton.style.transform = 'scale(1)';
+     });
+ 
+     // Event listener for OK button click
+     okButton.addEventListener('click', () => {
+         errorToast.style.opacity = '0';
+         setTimeout(() => {
+             document.body.removeChild(errorToast);
+         }, 400);
+     });
+}
+
+
 // Function to transcribe the video
 function transcribeVideo(videoUrl) {
     console.log('Transcribing video:', videoUrl); // Log the video URL
@@ -291,33 +359,31 @@ function transcribeVideo(videoUrl) {
     chrome.runtime.sendMessage({ action: 'transcribe', videoUrl }, (response) => {
         if (response && response.transcript) {
             createTranscriptionPopup(response.transcript);
-
-            // Revert button to original icon after response
-            const button = document.getElementById('transcription-button');
-            if (button) {
-                const icon = document.createElement('span');
-                icon.innerHTML = '&#128393;';  // Unicode pencil icon
-                icon.style.fontSize = '20px';  // Font size for the icon
-                button.innerHTML = '';  // Clear current content
-                button.appendChild(icon);
-            }
         } else {
             console.error('Error fetching transcript. Please try again.');
-            // Hide the button immediately upon encountering an error
-            const button = document.getElementById('transcription-button');
-            if (button) {
-                button.style.display = 'none';
-                window.transcriptionButtonHidden = true; // Set flag indicating the button is hidden
-            }
+            // Show a stylish error message
+            showErrorMessage('Failed to transcribe the video.<br />Please try again later.');
+        }
+
+        // Revert button to original pencil icon after response
+        const button = document.getElementById('transcription-button');
+        if (button) {
+            const icon = document.createElement('span');
+            icon.innerHTML = '&#128393;';  // Unicode pencil icon
+            icon.style.fontSize = '20px';  // Font size for the icon
+            button.innerHTML = '';  // Clear current content
+            button.appendChild(icon);
         }
     });
-}
-
-
-
+}                                  
 
 // Function to add the transcription button
 function addTranscriptionButton() {
+    // Only add the button if on a video page
+    if (!window.location.href.includes('watch')) {
+        return;
+    }
+
     let button = document.getElementById('transcription-button');
     if (button) {
         button.style.display = 'flex'; // Ensure the button is displayed
@@ -372,15 +438,47 @@ function addTranscriptionButton() {
 // Initialize and add the transcription button on new videos
 function initializeContentScript() {
     console.log('Content script loaded'); // Log script load
-    addTranscriptionButton();
+
+    // Add button if on a video page
+    if (window.location.href.includes('watch')) {
+        addTranscriptionButton();
+    }
 
     const observer = new MutationObserver(() => {
-        if (window.location.href.includes('watch') && !window.transcriptionButtonHidden) {
+        if (window.location.href.includes('watch')) {
+            // Ensure button is displayed for new video
+            window.transcriptionButtonHidden = false;
             addTranscriptionButton();
+        } else {
+            // Remove button if not on a video page
+            const button = document.getElementById('transcription-button');
+            if (button) {
+                button.style.display = 'none';
+            }
         }
     });
 
     observer.observe(document.body, { childList: true, subtree: true });
+
+    // Periodic check for URL changes
+    let lastUrl = location.href;
+    setInterval(() => {
+        const currentUrl = location.href;
+        if (currentUrl !== lastUrl) {
+            lastUrl = currentUrl;
+            if (currentUrl.includes('watch')) {
+                // Ensure button is displayed for new video
+                window.transcriptionButtonHidden = false;
+                addTranscriptionButton();
+            } else {
+                // Remove button if not on a video page
+                const button = document.getElementById('transcription-button');
+                if (button) {
+                    button.style.display = 'none';
+                }
+            }
+        }
+    }, 1000);  // Check every second
 }
 
 if (!window.hasRun) {
