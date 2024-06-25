@@ -273,12 +273,12 @@ function handleFullscreenChange() {
             // In full-screen mode: position at bottom right
             button.style.top = ''; // Clear top position
             button.style.bottom = '10px';
-            button.style.right = '260px';
+            button.style.right = '315px';
         } else {
             // Not in full-screen mode: position at top right
             button.style.top = '8px';
             button.style.bottom = '';
-            button.style.right = '300px';
+            button.style.right = '185px';
         }
     }
 }
@@ -288,8 +288,8 @@ function handleFullscreenChange() {
 function showErrorMessage(message) {
     const errorToast = document.createElement('div');
     errorToast.style.position = 'fixed';
-    errorToast.style.top = '10%';
-    errorToast.style.left = '78%';
+    errorToast.style.top = '20%';
+    errorToast.style.left = '87%';
     errorToast.style.transform = 'translate(-50%, -50%)';
     errorToast.style.padding = '40px 5px';
     errorToast.style.backgroundColor = '#fff';

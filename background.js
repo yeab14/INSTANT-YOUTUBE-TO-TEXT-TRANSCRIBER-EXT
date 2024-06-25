@@ -27,26 +27,4 @@ function extractVideoId(url) {
     return videoIdMatch ? videoIdMatch[1] : null;
 }
 
-// Listener to detect tab updates and URL changes
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === 'complete' && tab.url.includes('youtube.com/watch')) {
-        chrome.scripting.executeScript({
-            target: { tabId: tabId },
-            files: ['content.js']
-        });
-    }
-});
-
-// Optional: Listener for tab activation, if needed
-chrome.tabs.onActivated.addListener(activeInfo => {
-    chrome.tabs.get(activeInfo.tabId, tab => {
-        if (tab.url.includes('youtube.com/watch')) {
-            chrome.scripting.executeScript({
-                target: { tabId: tab.id },
-                files: ['content.js']
-            });
-        }
-    });
-});
-
 
