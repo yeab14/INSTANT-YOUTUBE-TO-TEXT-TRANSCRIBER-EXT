@@ -91,7 +91,7 @@ function showToastMessage(message, isSuccess) {
     toast.style.fontSize = '16px';  // Font size
     toast.style.fontWeight = 'bold';  // Font weight
     toast.style.position = 'fixed';
-    toast.style.top = '20px';
+    toast.style.top = '12px';
     toast.style.right = '20px';
     toast.style.padding = '15px 20px';
     toast.style.borderRadius = '5px';
@@ -288,6 +288,84 @@ if (!userHasRated) {
 }
 
 
+function showErrorMessage(message) {
+    const errorToast = document.createElement('div');
+    errorToast.style.position = 'fixed';
+    errorToast.style.top = '50%';
+    errorToast.style.left = '50%';
+    errorToast.style.transform = 'translate(-50%, -50%)';
+    errorToast.style.width = '440px'; // Same width as transcription popup
+    errorToast.style.height = '540px'; // Same height as transcription popup
+    errorToast.style.backgroundColor = '#fff';
+    errorToast.style.border = ' #dc3545'; // Red border with increased thickness
+    errorToast.style.borderRadius = '10px';
+    errorToast.style.boxShadow = '0px 8px 20px rgba(0, 0, 0, 0.4)'; // Increased shadow effect
+    errorToast.style.fontFamily = 'Arial, sans-serif'; // Stylish font
+    errorToast.style.zIndex = '9999';
+    errorToast.style.opacity = '0';
+    errorToast.style.transition = 'opacity 0.4s ease-in-out';
+    errorToast.style.overflow = 'hidden'; // Hide overflow if needed
+
+    const errorMessage = document.createElement('div');
+    errorMessage.style.display = 'flex';
+    errorMessage.style.flexDirection = 'column';
+    errorMessage.style.alignItems = 'center';
+    errorMessage.style.justifyContent = 'center';
+    errorMessage.style.height = '100%';
+    errorMessage.style.padding = '40px'; // Increased padding inside the error message
+    errorMessage.style.textAlign = 'center';
+
+    errorMessage.innerHTML = `
+        <p style="margin: 0; font-size: 24px; line-height: 1.5; font-family: 'Georgia', serif; color: #333;">${message}</p>
+        <button id="error-toast-ok" style="
+            background: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-family: 'Arial', sans-serif;
+        ">OK</button>
+    `;
+
+    errorToast.appendChild(errorMessage);
+    document.body.appendChild(errorToast);
+
+    // Fade in toast
+    setTimeout(() => {
+        errorToast.style.opacity = '1';
+    }, 100);
+
+    // Event listener for OK button hover effect
+    const okButton = document.getElementById('error-toast-ok');
+    okButton.addEventListener('mouseenter', () => {
+        okButton.style.backgroundColor = '#b80000';
+        okButton.style.transform = 'scale(1.1)';
+    });
+
+    okButton.addEventListener('mouseleave', () => {
+        okButton.style.backgroundColor = '#dc3545';
+        okButton.style.transform = 'scale(1)';
+    });
+
+    // Event listener for OK button click
+    okButton.addEventListener('click', () => {
+        errorToast.style.opacity = '0';
+        setTimeout(() => {
+            document.body.removeChild(errorToast);
+        }, 400);
+    });
+}
+
+
+
+
+
 // Function to transcribe the video
 function transcribeVideo(videoUrl) {
     console.log('Transcribing video:', videoUrl); // Log the video URL
@@ -296,26 +374,23 @@ function transcribeVideo(videoUrl) {
     chrome.runtime.sendMessage({ action: 'transcribe', videoUrl }, (response) => {
         if (response && response.transcript) {
             createTranscriptionPopup(response.transcript);
-
-            // Revert button to original icon after response
-            const button = document.getElementById('transcription-button');
-            if (button) {
-                const icon = document.createElement('span');
-                icon.innerHTML = '&#128393;';  // Unicode pencil icon
-                icon.style.fontSize = '20px';  // Font size for the icon
-                button.innerHTML = '';  // Clear current content
-                button.appendChild(icon);
-            }
         } else {
             console.error('Error fetching transcript. Please try again.');
-            // Hide the button immediately upon encountering an error
-            const button = document.getElementById('transcription-button');
-            if (button) {
-                button.style.display = 'none';
-            }
+            // Show a stylish error message
+            showErrorMessage('Failed to transcribe the video.<br />Please try again later.');
+        }
+
+        // Revert button to original pencil icon after response
+        const button = document.getElementById('transcription-button');
+        if (button) {
+            const icon = document.createElement('span');
+            icon.innerHTML = '&#128393;';  // Unicode pencil icon
+            icon.style.fontSize = '20px';  // Font size for the icon
+            button.innerHTML = '';  // Clear current content
+            button.appendChild(icon);
         }
     });
-}
+}    
 
 
 });
