@@ -288,7 +288,7 @@ function handleFullscreenChange() {
 function showErrorMessage(message) {
     const errorToast = document.createElement('div');
     errorToast.style.position = 'fixed';
-    errorToast.style.top = '15%';
+    errorToast.style.top = '10%';
     errorToast.style.left = '78%';
     errorToast.style.transform = 'translate(-50%, -50%)';
     errorToast.style.padding = '40px 5px';
@@ -389,6 +389,40 @@ function addTranscriptionButton() {
 
     button.addEventListener('mouseleave', () => {
         button.style.backgroundColor = '#dc3545';  // Restore original red after hover
+    });
+
+    // Function to calculate and set button position
+    const setPosition = () => {
+        const videoElement = document.querySelector('video'); // Assuming video element exists
+
+        if (videoElement) {
+            const rect = videoElement.getBoundingClientRect();
+            const videoWidth = rect.width;
+            const videoHeight = rect.height;
+            const videoTop = rect.top;
+            const videoRight = rect.right;
+
+            // Adjust button position relative to video element
+            const buttonTop = videoTop + 10; // Example: 10px offset from top of video
+            const buttonRight = window.innerWidth - videoRight + 10; // Example: 10px offset from right of video
+
+            button.style.top = `${buttonTop}px`;
+            button.style.right = `${buttonRight}px`;
+        } else {
+            // Fallback to fixed position if video element is not found
+            button.style.top = '8px'; // Example: Fixed position top for non-video pages
+            button.style.right = '300px'; // Example: Fixed position right for non-video pages
+        }
+    };
+
+    // Initial positioning
+    setPosition();
+
+    // Re-position on window resize (debounced for performance)
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(setPosition, 250); // Adjust debounce timeout as needed
     });
 
     document.body.appendChild(button);
