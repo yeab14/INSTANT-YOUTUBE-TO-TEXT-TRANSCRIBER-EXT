@@ -26,11 +26,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["icons/loading.gif"],
+      "resources": ["icons/loading.gif", "welcome.html"],
       "matches": ["<all_urls>"]
     }
   ]
 }
+
 
 
 
