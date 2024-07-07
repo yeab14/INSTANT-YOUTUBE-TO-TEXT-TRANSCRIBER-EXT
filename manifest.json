@@ -5,7 +5,9 @@
   "description": "Automatically transcribe YouTube videos into text. Enhance your learning and accessibility with this powerful tool!",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage",
+    "management"
   ],
   "background": {
     "service_worker": "background.js"

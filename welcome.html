@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome to Instant YouTube to Text Transcriber Ext</title>
+  <title>WELCOME TO INSTANT YOUTUBE TO TEXT TRANSCRIBER CHROME EXTENSION!</title>
+  <link rel="icon" type="image/png" href="../icons/icon16.png"> <!-- Icon for browser tab -->
   <style>
     body {
       display: flex;
@@ -28,15 +29,28 @@
       align-items: center;
     }
 
-    h1 {
-      font-size: 28px; /* Larger font size */
-      color: #333; /* Dark gray color */
-      margin-bottom: 10px; /* Reduced margin */
-      font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-      font-weight: bold; /* Bold text */
-      text-transform: uppercase; /* Uppercase text */
-      letter-spacing: 1px; /* Increased letter spacing */
+    .title-container {
+      display: flex;
+      align-items: center; /* Center align icon and title horizontally */
+      margin-bottom: 20px; /* Space between icon and title */
     }
+
+    .extension-icon {
+      width: 64px; /* Adjust icon size */
+      height: 64px;
+      margin-right: 30px; /* Space between icon and title */
+    }
+
+    h1 {
+  font-size: 28px; /* Reduced font size */
+  color: #333; /* Dark gray color */
+  margin: 0; /* Remove default margin */
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: bold; /* Bold text */
+  letter-spacing: 0.5px; /* Adjusted letter spacing */
+  text-align: left;
+}
+
 
     p {
       font-size: 18px; /* Larger font size */
@@ -60,9 +74,14 @@
 </head>
 <body>
   <div class="container">
-    <h1>Welcome to Instant YouTube to Text Transcriber Chrome Extension!</h1>
+    <div class="title-container">
+      <img src="../icons/icon16.png" alt="Extension Icon" class="extension-icon">
+      <h1>WELCOME TO<br>INSTANT YOUTUBE TO TEXT<br>TRANSCRIBER CHROME EXTENSION</h1>
+    </div>
     <p>Thank you for installing our extension. Watch the video below to learn how to pin the extension to your toolbar.</p>
     <iframe width="560" height="315" src="https://www.youtube.com/embed/FN3r-k_EMgg" allowfullscreen></iframe>
   </div>
 </body>
 </html>
+
+
