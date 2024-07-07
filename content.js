@@ -272,13 +272,30 @@ function handleFullscreenChange() {
         if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement) {
             // In full-screen mode: position at bottom right
             button.style.top = ''; // Clear top position
-            button.style.bottom = '10px';
+            button.style.bottom = '-15px';
             button.style.right = '315px';
+            button.style.width = '1px';
+            button.style.height = '1px';
         } else {
             // Not in full-screen mode: position at top right
             button.style.top = '8px';
             button.style.bottom = '';
             button.style.right = '185px';
+            button.style.position = 'fixed';
+            button.style.zIndex = '9999';
+            button.style.padding = '0';  // Remove padding
+            button.style.backgroundColor = '#dc3545';  // Red color
+            button.style.color = '#ffffff';  // White text
+            button.style.border = 'none';
+            button.style.borderRadius = '50%';  // Circular button
+            button.style.fontFamily = 'Arial, sans-serif';  // Set font family
+            button.style.cursor = 'pointer';
+            button.style.transition = 'background-color 0.3s ease';  // Hover effect
+            button.style.width = '39px';  // Width of the button
+            button.style.height = '39px';  // Height of the button
+            button.style.display = 'flex';  // Use flexbox for centering
+            button.style.alignItems = 'center';  // Center icon vertically
+            button.style.justifyContent = 'center';
         }
     }
 }
